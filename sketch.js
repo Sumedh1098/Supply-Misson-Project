@@ -1,95 +1,83 @@
-var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
-var packageBody,ground
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
+const Render = Matter.Render;
+const Constraint = Matter.Constraint;
+var bob1,bob2,bob3, bob4,bob5, roofObject
+var rope1,rope2,rope3, rope4,rope5;
+var world;
 
-function preload()
-{
-	helicopterIMG=loadImage("helicopter.png")
-	packageIMG=loadImage("package.png")
-}
 
 function setup() {
-	createCanvas(800, 700);
+	createCanvas(800, 600);
 	rectMode(CENTER);
-	
-
-	packageSprite=createSprite(width/2, 80, 10,10);
-	packageSprite.addImage(packageIMG)
-	packageSprite.scale=0.2
-
-	helicopterSprite=createSprite(width/2, 200, 10,10);
-	helicopterSprite.addImage(helicopterIMG)
-	helicopterSprite.scale=0.6
-
-	groundSprite=createSprite(width/2, height-35, width,10);
-	groundSprite.shapeColor=color(255)
 
 
 	engine = Engine.create();
 	world = engine.world;
 
-	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:0.4, isStatic:true});
-	World.add(world, packageBody);
+	roofObject=new roof(400,250,230,20);
+	bob1 = new bob(320,575,40)
+	bob2 = new bob(360,575,40)
+	bob3 = new bob(400,575,40)
+	bob4 = new bob(440,575,40)
+	bob5 = new bob(480,575,40)
 	
-	Matter.Body.translate(packageBody, {x:-20, y:0})
+	rope1=new rope(bob1.body,roofObject.body,-80)
+	rope2=new rope(bob2.body,roofObject.body,-40)
+	rope3=new rope(bob3.body,roofObject.body,0)
+	rope4=new rope(bob4.body,roofObject.body,40)
+	rope5=new rope(bob5.body,roofObject.body,80)
 	
-	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
- 	World.add(world, ground);
-
- 	boxPosition=width/2-100
- 	boxY=610;
-
-	packageSprite.x = packageBody.position.x
-	packageSprite.y = packageBody.position.y
-
- 	boxleftSprite=createSprite(boxPosition, boxY, 20,100);
- 	boxleftSprite.shapeColor=color(255,0,0);
-
- 	boxLeftBody = Bodies.rectangle(boxPosition+20, boxY, 20,100 , {isStatic:true} );
- 	World.add(world, boxLeftBody);
-
- 	boxBase=createSprite(boxPosition+100, boxY+40, 200,20);
- 	boxBase.shapeColor=color(255,0,0);
-
- 	boxBottomBody = Bodies.rectangle(boxPosition+100, boxY+45-20, 200,20 , {isStatic:true} );
- 	World.add(world, boxBottomBody);
-
- 	boxleftSprite=createSprite(boxPosition+200 , boxY, 20,100);
- 	boxleftSprite.shapeColor=color(255,0,0);
-
- 	boxRightBody = Bodies.rectangle(boxPosition+200-20 , boxY, 20,100 , {isStatic:true} );
- 	World.add(world, boxRightBody);
-
-
 	Engine.run(engine);
+	
   
 }
 
-
 function draw() {
   rectMode(CENTER);
-  background(0);
- 
-  packageSprite.x= packageBody.position.x 
-  packageSprite.y= packageBody.position.y 
+  background(230);
+  roofObject.display();
 
-  if (keyCode == LEFT_ARROW) {
-	  helicopterSprite.x = helicopterSprite.x-20;
-  }
+  rope1.display();
+  rope2.display();
+  rope3.display();
+  rope4.display();
+  rope5.display();
 
-  if (keyCode == RIGHT_ARROW) {
-	helicopterSprite.x = helicopterSprite.x+20;
-	}
+  bob1.display();
+  bob2.display();
   
-	if (keyCode == DOWN_ARROW) {
-		Matter.Body.setStatic(packageBody, false);
-	}
+  bob3.display();
+  bob4.display();
+  bob5.display();
+}
 
-  drawSprites();
-  
-  
- 
+
+//CHOOSE THE CORRECT OPTION TO APPLY A KEYPRESSED TO CHANGE THE POSITION OF BALL OBJECT TO THE LEFT WHEN UP ARROW KEY IS PRESSED
+
+// function keyPressed() {
+// 	if (keyCode === DOWN_ARROW) {
+// 		Matter.Body.applyForce(bob1.body,bob1.body.position,{x:-50,y:-45});
+// 	}
+// }
+
+// function keyPressed() {
+// 	if (keyCode === UP_ARROW) {
+// 		Matter.Body.applyForce(bob1,bob1.position,{x:-50,y:-45});
+// 	}
+// }
+
+// function keyPressed() {
+// 	if (keyCode === UP_ARROW) {
+// 		Matter.Body.applyForce(bob1.body,{x:-50,y:-45});
+// 	}
+// }
+
+ function keyPressed() {
+ 	if (keyCode === UP_ARROW) {
+ 		Matter.Body.applyForce(bob1.body,bob1.body.position,{x:-50,y:-45});
+ 	}
 }
